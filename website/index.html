@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes - Tu Asistente Personal de Guardarropa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animaciones globales */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Clases de animación */
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .animate-fade-in-left {
+            animation: fadeInLeft 0.8s ease-out;
+        }
+        
+        .animate-fade-in-right {
+            animation: fadeInRight 0.8s ease-out;
+        }
+        
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .logo:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        main {
+            margin-top: 140px;
+            padding: 4rem 0;
+        }
+        
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50px, -50px) rotate(360deg);
+            }
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            border-radius: 25px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .app-icon:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .app-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+            border-radius: 27px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .app-icon:hover::after {
+            opacity: 1;
+            animation: rotate 2s linear infinite;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .feature:hover::before {
+            left: 100%;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .feature:hover .feature-icon {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        }
+        
+        .feature h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover h3 {
+            transform: translateY(-2px);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .download-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: rotate 10s linear infinite;
+            pointer-events: none;
+        }
+        
+        .download-section h2 {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .download-section p {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .download-btn:hover::before {
+            left: 100%;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 122, 255, 0.5);
+            background: linear-gradient(135deg, #0056CC 0%, #007AFF 100%);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .download-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Fittly</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#caracteristicas">Características</a></li>
+                <li><a href="privacy.html">Privacidad</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="container">
+        <section id="inicio" class="hero animate-fade-in-up">
+
+            <h1 class="animate-fade-in-left">Clothes</h1>
+            <p class="animate-fade-in-right">Tu asistente personal de guardarropa con inteligencia artificial</p>
+            <p class="animate-fade-in-up">Organiza tu ropa, obtén recomendaciones inteligentes y nunca más te quedes sin saber qué ponerte</p>
+        </section>
+        
+        <section id="caracteristicas" class="features">
+            <div class="feature animate-on-scroll">
+                <div class="feature-icon">🤖</div>
+                <h3>IA Avanzada</h3>
+                <p>Recomendaciones personalizadas basadas en el clima, ocasión y tu estilo personal</p>
+            </div>
+            
+            <div class="feature animate-on-scroll">
+                <div class="feature-icon">📱</div>
+                <h3>Fácil de Usar</h3>
+                <p>Interfaz intuitiva diseñada para iOS con la mejor experiencia de usuario</p>
+            </div>
+            
+            <div class="feature animate-on-scroll">
+                <div class="feature-icon">🌤️</div>
+                <h3>Clima Integrado</h3>
+                <p>Sugerencias automáticas basadas en las condiciones meteorológicas actuales</p>
+            </div>
+            
+            <div class="feature animate-on-scroll">
+                <div class="feature-icon">📸</div>
+                <h3>Catálogo Visual</h3>
+                <p>Fotografía y organiza tu guardarropa de manera visual y práctica</p>
+            </div>
+            
+            <div class="feature animate-on-scroll">
+                <div class="feature-icon">🎯</div>
+                <h3>Recomendaciones Smart</h3>
+                <p>Algoritmos que aprenden de tus preferencias para mejores sugerencias</p>
+            </div>
+            
+            <div class="feature animate-on-scroll">
+                <div class="feature-icon">🔒</div>
+                <h3>Privacidad Total</h3>
+                <p>Tus datos están seguros y protegidos con los más altos estándares de seguridad</p>
+            </div>
+        </section>
+        
+        <section class="download-section animate-on-scroll">
+            <h2>¡Descarga Clothes Ahora!</h2>
+            <p>Disponible próximamente en el App Store</p>
+            <a href="#" class="download-btn" onclick="showComingSoon()">Próximamente en App Store</a>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Clothes App. Todos los derechos reservados.</p>
+            <p><a href="privacy.html" style="color: white;">Política de Privacidad</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        // Animaciones al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos con animación de scroll
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Efecto de scroll en el header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scroll para navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Función para mostrar mensaje de "próximamente"
+        function showComingSoon() {
+            // Crear modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 3rem;
+                border-radius: 20px;
+                text-align: center;
+                color: white;
+                max-width: 400px;
+                transform: scale(0.8);
+                transition: transform 0.3s ease;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            `;
+            
+            modalContent.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                <h2 style="margin-bottom: 1rem;">¡Próximamente!</h2>
+                <p style="margin-bottom: 2rem; opacity: 0.9;">Clothes estará disponible muy pronto en el App Store. ¡Mantente atento!</p>
+                <button onclick="closeModal()" style="
+                    background: rgba(255, 255, 255, 0.2);
+                    border: 2px solid white;
+                    color: white;
+                    padding: 0.8rem 2rem;
+                    border-radius: 50px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.background='white'; this.style.color='#667eea'" onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.color='white'">Entendido</button>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Animar entrada
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            }, 10);
+            
+            // Función para cerrar modal
+            window.closeModal = () => {
+                modal.style.opacity = '0';
+                modalContent.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                    delete window.closeModal;
+                }, 300);
+            };
+            
+            // Cerrar al hacer clic fuera
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    window.closeModal();
+                }
+            });
+        }
+        
+        // Efecto de partículas en el fondo (opcional)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                width: 4px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1;
+                animation: float 15s linear infinite;
+            `;
+            
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                if (document.body.contains(particle)) {
+                    document.body.removeChild(particle);
+                }
+            }, 15000);
+        }
+        
+        // Crear partículas ocasionalmente
+        setInterval(createParticle, 3000);
+        
+        // Efecto de cursor personalizado
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.custom-cursor') || (() => {
+                const c = document.createElement('div');
+                c.className = 'custom-cursor';
+                c.style.cssText = `
+                    position: fixed;
+                    width: 20px;
+                    height: 20px;
+                    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    transition: transform 0.1s ease;
+                `;
+                document.body.appendChild(c);
+                return c;
+            })();
+            
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+    </script>
+</body>
+</html>
