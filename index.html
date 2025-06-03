@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clothes - Tu Asistente Personal de Guardarropa</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4552231815970148"
+            crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-4552231815970148">
+    
     <style>
         * {
             margin: 0;
@@ -455,6 +461,28 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* Ad Container Styles */
+        .ad-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .ad-container:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .ad-container {
+                margin: 1.5rem 0;
+                padding: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -496,6 +524,19 @@
                 <p>Sugerencias automáticas basadas en las condiciones meteorológicas actuales</p>
             </div>
             
+            <!-- Google AdSense Ad Unit 1 - Between Features -->
+            <div class="ad-container" style="text-align: center; margin: 2rem 0; padding: 1rem;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-4552231815970148"
+                     data-ad-slot="0000000001"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            
             <div class="feature animate-on-scroll">
                 <div class="feature-icon">📸</div>
                 <h3>Catálogo Visual</h3>
@@ -514,6 +555,19 @@
                 <p>Tus datos están seguros y protegidos con los más altos estándares de seguridad</p>
             </div>
         </section>
+        
+        <!-- Google AdSense Ad Unit 2 - Before Download Section -->
+        <div class="ad-container" style="text-align: center; margin: 3rem 0; padding: 1rem;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4552231815970148"
+                 data-ad-slot="0000000002"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
         
         <section class="download-section animate-on-scroll">
             <h2>¡Descarga Clothes Ahora!</h2>
